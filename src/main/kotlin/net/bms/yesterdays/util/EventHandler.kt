@@ -12,6 +12,7 @@ import net.minecraft.util.ResourceLocation
 import net.minecraftforge.client.event.ModelRegistryEvent
 import net.minecraftforge.event.AttachCapabilitiesEvent
 import net.minecraftforge.event.RegistryEvent
+import net.minecraftforge.event.entity.player.PlayerEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 
 class EventHandler {
@@ -35,6 +36,23 @@ class EventHandler {
     fun attachSoulCapability(event: AttachCapabilitiesEvent<Entity>) {
         if (event.`object` is EntityLiving) {
             event.addCapability(ResourceLocation(Yesterdays.MODID, "soul_capability"), SoulProvider())
+        }
+    }
+
+    @SubscribeEvent
+    fun reincarnatePlayer(event: PlayerEvent.Clone) {
+        if (event.isWasDeath && event.original.hasCapability(SoulProvider.SOUL_CAPABILITY, null) &&
+                event.entityPlayer.hasCapability(SoulProvider.SOUL_CAPABILITY, null)) {
+            val oldSoul = event.original.getCapability(SoulProvider.SOUL_CAPABILITY, null)
+            if (oldSoul != null) {
+                event.entityPlayer.getCapability(SoulProvider.SOUL_CAPABILITY, null)?.soulType = oldSoul.soulType
+                if (oldSoul.karmaScore >= 4)
+                    event.entityPlayer.getCapability(SoulProvider.SOUL_CAPABILITY, null)!!.soulType += 1
+                event.entityPlayer.getCapability(SoulProvider.SOUL_CAPABILITY, null)?.karmaScore = oldSoul.karmaScore
+                event.entityPlayer.getCapability(SoulProvider.SOUL_CAPABILITY, null)?.killCount = 0
+                event.entityPlayer.getCapability(SoulProvider.SOUL_CAPABILITY, null)!!.livesLived += 1
+                event.entityPlayer.getCapability(SoulProvider.SOUL_CAPABILITY, null)?.hasReachedMoksha = oldSoul.karmaScore >= 64
+            }
         }
     }
 }

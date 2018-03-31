@@ -11,7 +11,8 @@ class SoulStorage: Capability.IStorage<ISoul> {
         nbt.setBoolean("hasReachedMoksha", instance!!.hasReachedMoksha)
         nbt.setInteger("livesLived", instance.livesLived)
         nbt.setInteger("killCount", instance.killCount)
-        nbt.setString("soulType", instance.soulType.name)
+        nbt.setInteger("karmaScore", instance.karmaScore)
+        nbt.setInteger("soulType", instance.soulType)
         return nbt
     }
 
@@ -20,7 +21,8 @@ class SoulStorage: Capability.IStorage<ISoul> {
         instance?.hasReachedMoksha = compound.getBoolean("hasReachedMoksha")
         instance?.livesLived = compound.getInteger("livedLived")
         instance?.killCount = compound.getInteger("killCount")
-        instance?.soulType = EnumSoulType.valueOf(compound.getString("soulType"))
+        instance?.karmaScore = compound.getInteger("karmaScore")
+        instance?.soulType = compound.getInteger("soulType")
     }
 
 }

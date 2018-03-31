@@ -2,7 +2,8 @@ package net.bms.yesterdays.cap
 
 interface ISoul {
     var livesLived: Int
-    var soulType: EnumSoulType
+    var soulType: Int
     var killCount: Int
     var hasReachedMoksha: Boolean
+    var karmaScore: Int
 }
