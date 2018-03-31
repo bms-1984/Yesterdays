@@ -6,7 +6,7 @@ import net.bms.yesterdays.init.Blocks
 import net.bms.yesterdays.init.Items
 import net.minecraft.block.Block
 import net.minecraft.entity.Entity
-import net.minecraft.entity.EntityLiving
+import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.Item
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.client.event.ModelRegistryEvent
@@ -34,7 +34,7 @@ class EventHandler {
 
     @SubscribeEvent
     fun attachSoulCapability(event: AttachCapabilitiesEvent<Entity>) {
-        if (event.`object` is EntityLiving) {
+        if (event.`object` is EntityPlayer) {
             event.addCapability(ResourceLocation(Yesterdays.MODID, "soul_capability"), SoulProvider())
         }
     }
