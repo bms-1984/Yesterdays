@@ -4,7 +4,7 @@ classic 1973 progressive rock album Tales from Topographic Oceans, which is in t
 based on a footnote in Paramahansa Yogananda's *Autobiography of a Yogi*.
 Jon Anderson, Yes' lead singer, wrote the entire double album about four bodies of Hindu texts,
 collectively known as the Shastras. This mod basically gives every living entity (monsters, players, animals)
-a soul. Killing anything hurts your soul's karma. If you can go through four lives without getting too much bad karma, you get promoted to a new soul level in your next life.
+a soul. Killing anything hurts your soul's karma. If you can go through a life without getting too much bad karma, you get promoted to a new soul level in your next life.
 There are four soul levels, each with new abilities added onto those of its predecessor.
 Once you level up from the fourth soul level, you achieve Moksha, which comes with many benefits and ends the base
 progression of the mod.
