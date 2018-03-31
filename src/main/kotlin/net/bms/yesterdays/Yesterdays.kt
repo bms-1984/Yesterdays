@@ -1,5 +1,6 @@
 package net.bms.yesterdays
 
+import net.bms.yesterdays.command.KarmaCommand
 import net.bms.yesterdays.item.tab.YesterdaysCreativeTab
 import net.bms.yesterdays.proxy.CommonProxy
 import net.minecraft.creativetab.CreativeTabs
@@ -8,6 +9,7 @@ import net.minecraftforge.fml.common.SidedProxy
 import net.minecraftforge.fml.common.event.FMLInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent
 
 @Mod(modid = Yesterdays.MODID, name = Yesterdays.MOD_NAME, version = Yesterdays.MOD_VERSION,
         acceptedMinecraftVersions = Yesterdays.ACCEPTED_MC_VERSIONS, dependencies = Yesterdays.DEPENDENCIES,
@@ -42,5 +44,10 @@ object Yesterdays {
     @Mod.EventHandler
     fun postInit(event: FMLPostInitializationEvent) {
         proxy.postInit(event)
+    }
+
+    @Mod.EventHandler
+    fun registerCommands(event: FMLServerStartingEvent) {
+        event.registerServerCommand(KarmaCommand())
     }
 }
