@@ -6,12 +6,12 @@ import net.bms.yesterdays.init.Blocks
 import net.bms.yesterdays.init.Items
 import net.minecraft.block.Block
 import net.minecraft.entity.Entity
+import net.minecraft.entity.SharedMonsterAttributes
+import net.minecraft.entity.ai.attributes.AttributeModifier
 import net.minecraft.entity.monster.EntityMob
 import net.minecraft.entity.passive.EntityAnimal
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.Item
-import net.minecraft.potion.Potion
-import net.minecraft.potion.PotionEffect
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.client.event.ModelRegistryEvent
 import net.minecraftforge.event.AttachCapabilitiesEvent
@@ -22,6 +22,7 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent
 import net.minecraftforge.event.entity.player.BonemealEvent
 import net.minecraftforge.event.entity.player.PlayerEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
+import java.util.*
 
 class EventHandler {
     @SubscribeEvent
@@ -49,6 +50,9 @@ class EventHandler {
 
     @SubscribeEvent
     fun reincarnatePlayer(event: PlayerEvent.Clone) {
+        val healthModifierUUID = UUID.randomUUID()
+        val attackDamageUUID = UUID.randomUUID()
+        val movementSpeedUUID = UUID.randomUUID()
         if (event.isWasDeath && event.original.hasCapability(SoulProvider.SOUL_CAPABILITY, null) &&
                 event.entityPlayer.hasCapability(SoulProvider.SOUL_CAPABILITY, null)) {
             val oldSoul = event.original.getCapability(SoulProvider.SOUL_CAPABILITY, null)
@@ -71,7 +75,19 @@ class EventHandler {
             val soul = event.entityPlayer.getCapability(SoulProvider.SOUL_CAPABILITY, null)
             if (soul != null) {
                 if (soul.soulType >= 1)
-                    event.entityPlayer?.addPotionEffect(PotionEffect(Potion.getPotionFromResourceLocation("jump_boost")!!, Int.MAX_VALUE))
+                    if (event.entityPlayer?.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED)?.getModifier(movementSpeedUUID) == null)
+                        event.entityPlayer?.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED)
+                                ?.applyModifier(AttributeModifier(movementSpeedUUID, "movement_speed", 0.05, 0))
+                if (soul.soulType >= 2)
+                    if (event.entityPlayer?.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE)?.getModifier(attackDamageUUID) == null)
+                        event.entityPlayer?.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE)
+                                ?.applyModifier(AttributeModifier(attackDamageUUID, "attack_speed", 2.0, 0))
+                if (soul.soulType >= 3)
+                    if (event.entityPlayer?.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH)?.getModifier(healthModifierUUID) == null)
+                        event.entityPlayer?.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH)
+                                ?.applyModifier(AttributeModifier(healthModifierUUID, "new_health", 8.0, 0))
+                if (soul.soulType >= 4)
+                    event.entityPlayer?.capabilities?.allowFlying
             }
         }
     }

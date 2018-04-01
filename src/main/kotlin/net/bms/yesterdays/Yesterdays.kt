@@ -1,6 +1,8 @@
 package net.bms.yesterdays
 
+import net.bms.yesterdays.command.AddKarmaCommand
 import net.bms.yesterdays.command.KarmaCommand
+import net.bms.yesterdays.command.SetLevelCommand
 import net.bms.yesterdays.item.tab.YesterdaysCreativeTab
 import net.bms.yesterdays.proxy.CommonProxy
 import net.minecraft.creativetab.CreativeTabs
@@ -49,5 +51,7 @@ object Yesterdays {
     @Mod.EventHandler
     fun registerCommands(event: FMLServerStartingEvent) {
         event.registerServerCommand(KarmaCommand())
+        event.registerServerCommand(SetLevelCommand())
+        event.registerServerCommand(AddKarmaCommand())
     }
 }
