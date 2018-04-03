@@ -5,4 +5,6 @@ class DefaultSoul: ISoul {
     override var hasReachedMoksha: Boolean = false
     override var livesLived: Int = 0
     override var karmaScore: Int = 0
+    override var canHeal: Boolean = false
+    override var healCooldown: Int = 0
 }

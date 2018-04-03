@@ -4,6 +4,8 @@ import net.bms.yesterdays.Yesterdays
 import net.bms.yesterdays.cap.SoulProvider
 import net.bms.yesterdays.init.Blocks
 import net.bms.yesterdays.init.Items
+import net.bms.yesterdays.packet.InstantHealMessage
+import net.bms.yesterdays.proxy.ClientProxy
 import net.minecraft.block.Block
 import net.minecraft.entity.Entity
 import net.minecraft.entity.SharedMonsterAttributes
@@ -13,6 +15,7 @@ import net.minecraft.entity.passive.EntityAnimal
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.Item
 import net.minecraft.util.ResourceLocation
+import net.minecraft.util.text.TextComponentString
 import net.minecraftforge.client.event.ModelRegistryEvent
 import net.minecraftforge.event.AttachCapabilitiesEvent
 import net.minecraftforge.event.RegistryEvent
@@ -22,6 +25,10 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent
 import net.minecraftforge.event.entity.player.BonemealEvent
 import net.minecraftforge.event.entity.player.PlayerEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
+import net.minecraftforge.fml.common.gameevent.InputEvent
+import net.minecraftforge.fml.common.gameevent.TickEvent
+import net.minecraftforge.fml.relauncher.Side
+import net.minecraftforge.fml.relauncher.SideOnly
 import java.util.*
 
 class EventHandler {
@@ -71,6 +78,8 @@ class EventHandler {
                 event.entityPlayer.getCapability(SoulProvider.SOUL_CAPABILITY, null)?.karmaScore = oldSoul.karmaScore
                 event.entityPlayer.getCapability(SoulProvider.SOUL_CAPABILITY, null)!!.livesLived += 1
                 event.entityPlayer.getCapability(SoulProvider.SOUL_CAPABILITY, null)?.hasReachedMoksha = oldSoul.karmaScore >= 256
+                if (oldSoul.karmaScore >= 256)
+                    event.entityPlayer.sendMessage(TextComponentString("You have achieved Moksha. You are now invincible."))
             }
             val soul = event.entityPlayer.getCapability(SoulProvider.SOUL_CAPABILITY, null)
             if (soul != null) {
@@ -87,8 +96,27 @@ class EventHandler {
                         event.entityPlayer?.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH)
                                 ?.applyModifier(AttributeModifier(healthModifierUUID, "new_health", 8.0, 0))
                 if (soul.soulType >= 4)
-                    event.entityPlayer?.capabilities?.allowFlying
+                    soul.canHeal = true
             }
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    @SubscribeEvent
+    fun keyInput(event: InputEvent.KeyInputEvent) {
+        if (ClientProxy.KeyBindingInstantHeal.isPressed) {
+            Yesterdays.SIMPLEIMPL.sendToServer(InstantHealMessage(true))
+        }
+    }
+
+    @SubscribeEvent
+    fun playerTick(event: TickEvent.PlayerTickEvent) {
+        if (event.player.hasCapability(SoulProvider.SOUL_CAPABILITY, null)) {
+            if (event.player.getCapability(SoulProvider.SOUL_CAPABILITY, null)!!.canHeal)
+                event.player.getCapability(SoulProvider.SOUL_CAPABILITY, null)!!.healCooldown++
+            if (event.player.getCapability(SoulProvider.SOUL_CAPABILITY, null)!!.hasReachedMoksha)
+                if (event.player.health != event.player.maxHealth)
+                    event.player.heal(event.player.maxHealth - event.player.health)
         }
     }
 

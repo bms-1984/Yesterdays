@@ -12,6 +12,8 @@ class SoulStorage: Capability.IStorage<ISoul> {
         nbt.setInteger("livesLived", instance.livesLived)
         nbt.setInteger("karmaScore", instance.karmaScore)
         nbt.setInteger("soulType", instance.soulType)
+        nbt.setBoolean("canHeal", instance.canHeal)
+        nbt.setInteger("healCooldown", instance.healCooldown)
         return nbt
     }
 
@@ -21,6 +23,8 @@ class SoulStorage: Capability.IStorage<ISoul> {
         instance?.livesLived = compound.getInteger("livedLived")
         instance?.karmaScore = compound.getInteger("karmaScore")
         instance?.soulType = compound.getInteger("soulType")
+        instance?.canHeal = compound.getBoolean("canHeal")
+        instance?.healCooldown = compound.getInteger("healCooldown")
     }
 
 }

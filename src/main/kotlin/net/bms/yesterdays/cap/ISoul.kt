@@ -5,4 +5,6 @@ interface ISoul {
     var soulType: Int
     var hasReachedMoksha: Boolean
     var karmaScore: Int
+    var canHeal: Boolean
+    var healCooldown: Int
 }

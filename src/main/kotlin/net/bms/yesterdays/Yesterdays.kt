@@ -12,6 +12,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent
+import net.minecraftforge.fml.common.network.NetworkRegistry
 
 @Mod(modid = Yesterdays.MODID, name = Yesterdays.MOD_NAME, version = Yesterdays.MOD_VERSION,
         acceptedMinecraftVersions = Yesterdays.ACCEPTED_MC_VERSIONS, dependencies = Yesterdays.DEPENDENCIES,
@@ -28,6 +29,8 @@ object Yesterdays {
 
     @Mod.Instance
     lateinit var instance: Yesterdays
+
+    val SIMPLEIMPL = NetworkRegistry.INSTANCE.newSimpleChannel(MODID)
 
     @SidedProxy(clientSide = "net.bms.yesterdays.proxy.ClientProxy", serverSide = "net.bms.yesterdays.proxy.CommonProxy")
     lateinit var proxy: CommonProxy
