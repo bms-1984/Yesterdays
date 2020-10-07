@@ -1,3 +1,5 @@
+CURRENTLY DISCONTINUED
+
 ### Yesterdays: Giving Every Living Entity a Soul Since 1973
 Yesterdays is a Minecraft modification (for Modjam 2008.1). It's based on Yes'
 classic 1973 progressive rock album Tales from Topographic Oceans, which is in turn
